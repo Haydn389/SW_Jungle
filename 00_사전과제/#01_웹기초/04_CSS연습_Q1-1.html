@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지</title>
+    <style>
+        *{font-family: 'Nanum Myeongjo', serif;}
+        .myclass {
+            color: white;
+            width: 300px;
+            height: 200px;
+            background-image: url(https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg);
+            background-position: center;
+            /* background-repeat: no-repeat; */
+            background-size: cover;
+            text-align: center;
+            border-radius: 10px;
+            padding-top: 40px
+        }
+
+        input {
+            background-color: rgb(3, 3, 58);
+            text-align: center;
+            color: white;
+            border: 5px solid white;
+            border-radius: 10px;
+        }
+
+        div#login {
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            border: solid 1px gray;
+            border-radius: 10px;
+            background-color: rgb(3, 3, 58);
+            padding: 10px;
+        }
+
+        button {
+            /* color:; */
+            font-weight: bold;
+            /* background-color :yellow; */
+        }
+
+        .all {
+            border: 5px solid rgb(3, 3, 58);
+            width: 300px;
+            padding: 30px;
+            border-radius: 30px;
+            margin: 50px auto;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="all">
+        <div class="myclass">
+            <h1>로그인 페이지</h1>
+            <h5>아이디, 비밀번호를 입력해주세요</h5>
+        </div>
+        <hr>
+        <div id="login">
+            <p>
+                ID : <input type="text" size=15px>
+            </p>
+            <p>
+                PW: <input type="password" size=15px>
+            </p>
+            <button>로그인하기</button>
+        </div>
+
+    </div>
+</body>
+
+</html>

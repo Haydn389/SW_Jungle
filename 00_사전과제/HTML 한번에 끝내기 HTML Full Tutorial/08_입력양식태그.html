@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>입력양식 태그</title>
+    </head>
+    <body>
+       <form name="fname" action="sign.jsp" method="post">
+            <lable for="아이디">아이디</lable>
+            <input type="text" id="아이디" name="name" value="아이디를 입력하세요" size="20">
+            </p>
+            <lable for="비번">비밀번호</lable>
+            <input type="text" id="비번" name="name" value="비밀번호를 입력하세요" size="20">
+            <br>
+            <!-- 옵션태그 -->
+            <select id="food" name="food">
+                <option value="pizza" >피자</option>
+                <option value="hamburger">햄버거</option>
+                <option value="pasta"selected>파스타</option>
+            </select>
+            <hr>
+            <select id="food" name="food" multiple>
+                <option value="pizza" >피자</option>
+                <option value="hamburger">햄버거</option>
+                <option value="pasta"selected>파스타</option>
+            </select>
+            <hr>
+            <select id="food" name="food"multiple>
+                <optgroup label="음식">
+                    <option value="pizza" >피자</option>
+                    <option value="hamburger">햄버거</option>
+                    <option value="pasta"selected>파스타</option>    
+                </optgroup>
+                <optgroup label="후식" >
+                    <option value="cola" >콜라</option>
+                    <option value="coffee">커피</option>
+                    <option value="icecream"selected>아이스크림</option>    
+                </optgroup>
+            </select>
+            <hr>
+            <!-- 텍스트area 태그 -->
+            <!-- <hr> -->
+            <textarea name="article" rows="5" cols="10">aaaaabbbbb</textarea>
+            <hr>
+            <textarea name="article" rows="5" cols="10">가가가가가나나나나나</textarea>
+            <hr>
+            <!-- 버튼태그 -->
+            <button>Button</button>
+            <hr>
+            <fieldset>
+                <legend>개인정보</legend>
+                <label for="이름">이름:</label>
+                <input type="text" id="이름" name="name" value="이름을 입력하세요">
+                <br />
+                <label for="소속">소속:</label>
+                <input type="text" id="소속" name="affiliation" value="소속을 입력하세요">
+                <br />
+                <br />
+                <input type="submit" value="전송">
+
+            </fieldset>
+            <input list="browers">
+            <datalist id="browers">
+                <option value="Chrome"></option>
+                <option value="Firefox"></option>
+                <option value="Internet Explorer"></option>
+                <option value="Opera"></option>
+                <option value="Safari"></option>
+            </datalist>
+        </form>
+        <!-- 아웃풋 태그 -->
+        <form oninput="r.value=parseInt(x.value)*parseInt(y.value)">
+            <input type="number" id="x" name="x" value="10">
+            x
+            <input type="number" id="y" name="y" value="20">
+            =
+            <output name="r" for="x y"></output>
+            <br />
+            <input type="submit">
+        </form>
+
+    </body>
+</html>
