@@ -32,7 +32,7 @@
         }
 
         #input-box {
-            width: 400px;
+            width: 450px;
             /* margin: 20px auto; */
             padding: 10px 0 20px 0;
             /* border: black solid; */
@@ -44,7 +44,7 @@
             // index.html 로드가 완료되면 자동으로 showStar() 함수를 호출합니다.
             $("#cards-box").html("");
             showArticles();
-            showStar();
+
         });
         function postArticle() {
             // let num=num+1;
@@ -88,12 +88,12 @@
         function makeCard(url, comment, id) {
             // alert(id)
             let tempHtml =
-                `<div class="card" id=${id}>
+                `<div class="card" id="${id}">
                 <div class="card-body">
-                    <h href="#" class="card-title">${url}</h>
+                    <h href="#" class="card-title new_title">${url}</h>
                     <br><br>
-                    <p class="card-text">${comment}</p>
-                    <a href="#" onclick="modify("${id}")" class="badge badge-primary">수정</a>
+                    <p class="card-text new_comment">${comment}</p>
+                    <a href="#" type="button" onclick="modi('${id}')" class="badge badge-primary">수정</a>
                     <a href="#" type="button" onclick="del('${id}')" class="badge badge-danger">삭제</a>
                 </div>
             </div>`;
@@ -101,25 +101,69 @@
         }
 
         function del(id) {
-                // alert('삭제 클릭!');
-                // 1. 서버에 1) POST 방식으로, 2) /api/delete 라는 url에, 3) name_give라는 이름으로 name을 전달합니다.
-                // 참고) POST 방식이므로 data: {'name_give': name} 과 같은 양식이 되어야합니다!
-                $.ajax({
-                    type: "POST",
-                    url: "/memo/del",
-                    data: {'id_give': id},
-                    success: function (response) {
-                        if (response['result'] == 'success') {
-                            // 2. '삭제 완료! 안녕!' 얼럿을 띄웁니다.
-                            alert('삭제 완료!')
-                            // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
-                            window.location.reload()
-                        }
+            // 1. 서버에 1) POST 방식으로, 2) /api/delete 라는 url에, 3) name_give라는 이름으로 name을 전달합니다.
+            // 참고) POST 방식이므로 data: {'name_give': name} 과 같은 양식이 되어야합니다!
+            $.ajax({
+                type: "POST",
+                url: "/memo/del",
+                data: { 'id_give': id },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        // 2. '삭제 완료! 안녕!' 얼럿을 띄웁니다.
+                        alert('삭제 완료!')
+                        // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
+                        window.location.reload()
                     }
-                });
-            }
+                }
+            });
+        }
+        function modi(id) {
+            let old_title = $("#" + id).find('.new_title').text();
+            let old_comment = $("#" + id).find('.new_comment').text();
+            $("#" + id).html(` <div class="card-body">
+                <div id="input-box">
+                        <div class="input-group mb-3">
+                            <input id="input-title" type="text" class="form-control new_title" placeholder="제목을 수정하세요" value="${old_title}">
+                        </div>
+                        <div class="input-group">
+                            <textarea id="input-text" class="form-control new_comment" placeholder="내용을 수정하세요" >${old_comment}</textarea>
+                        </div>
+                        <a href="#" type="submit" onclick="up('${id}')"
+                            class="badge badge-success">저장</a>
+                    </div>
+                </div>`);
+        }
+        function up(id) {
+            let new_title = $("#" + id).find('.new_title').val();
+            let new_comment = $("#" + id).find('.new_comment').val();
+            // alert(new_title);
+            // alert(new_comment);
+            // 2. memo에 POST 방식으로 메모 생성 요청하기
+            $.ajax({
+                type: "POST", // POST 방식으로 요청하겠다.
+                url: "/memo/up", // /memo라는 url에 요청하겠다.
+                data: { title_give : new_title, comment_give: new_comment, id_give: id }, // 데이터를 주는 방법
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("저장 완료!");
+                        // 3. 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
+            $("#" + id).html(`  <div class="card-body">
+                    <h href="#" class="card-title">${new_title}</h>
+                    <br><br>
+                    <p class="card-text">${new_comment}</p>
+                    <a href="#" type="button" onclick="modi('${id}')" class="badge badge-primary">수정</a>
+                    <a href="#" type="button" onclick="del('${id}')" class="badge badge-danger">삭제</a>
+                </div>`);
 
-        
+        }
+
+
     </script>
 </head>
 
@@ -139,12 +183,14 @@
                 <form class="lead">
                     <button onclick="postArticle()" id="btn-post-box" type="submit" class="btn btn-primary">저장하기
                     </button>
-                    <a href="#" type="button" onclick="del('6306355c85ead27b916af905')" class="badge badge-danger">삭제</a>
                 </form>
             </div>
+
         </div>
 
+
         <div id="cards-box" class="card-columns">
+
         </div>
     </div>
 

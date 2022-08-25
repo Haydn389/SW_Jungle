@@ -55,6 +55,23 @@ def delete():
     # 3. 성공하면 success 메시지를 반환합니다.
     return jsonify({'result': 'success'})
 
+@app.route('/memo/up', methods=['POST'])
+def up():
+    title_receive = request.form['title_give']  # 클라이언트로부터 url을 받는 부분
+    comment_receive = request.form['comment_give']  # 클라이언트로부터 comment를 받는 부분
+    id_receive = request.form['id_give']  # 클라이언트로부터 comment를 받는 부분
+    print("☆☆☆☆☆☆새로받은값",title_receive,comment_receive,type(id_receive))
+    # 2. mystar 목록에서 delete_one으로 name이 name_receive와 일치하는 star를 제거합니다.
+    # print(id_receive)
+    db.articles.update_one({'_id': ObjectId(id_receive)},{'$set':{'url': title_receive, 'comment': comment_receive}})
+    # db.articles.insert_one({'url': title_receive, 'comment': comment_receive})
+    # 3. 성공하면 success 메시지를 반환합니다.
+    return jsonify({'result': 'success'})
+
+
+
+    
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
