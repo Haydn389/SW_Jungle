@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>나홀로메모장ver2.0</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .wrap {
+            width: 1500px;
+            margin: auto;
+        }
+
+        .card-title {
+            color: black;
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        #input-box {
+            width: 400px;
+            /* margin: 20px auto; */
+            padding: 10px 0 20px 0;
+            /* border: black solid; */
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            // index.html 로드가 완료되면 자동으로 showStar() 함수를 호출합니다.
+            $("#cards-box").html("");
+            showArticles();
+            showStar();
+        });
+        function postArticle() {
+            // let num=num+1;
+            alert("저장 완료!");
+            let title = $("#input-title").val();
+            let comment = $("#input-text").val();
+            // alert(title);
+            // 2. memo에 POST 방식으로 메모 생성 요청하기
+            $.ajax({
+                type: "POST", // POST 방식으로 요청하겠다.
+                url: "/memo", // /memo라는 url에 요청하겠다.
+                data: { title_give: title, comment_give: comment }, // 데이터를 주는 방법
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        // alert("포스팅 성공!");
+                        // 3. 성공 시 페이지 새로고침하기
+                        window.location.reload();
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
+        }
+
+        function showArticles() {
+            $.ajax({
+                type: "GET",
+                url: "/memo",
+                data: {},
+                success: function (response) {
+                    let articles = response["articles"];
+                    let ids = response["id"];
+                    console.log(articles);
+                    for (let i = 0; i < articles.length; i++) {
+                        makeCard(articles[i]["url"], articles[i]["comment"], ids[i]);
+                    }
+                }
+            })
+        }
+
+        function makeCard(url, comment, id) {
+            // alert(id)
+            let tempHtml =
+                `<div class="card" id=${id}>
+                <div class="card-body">
+                    <h href="#" class="card-title">${url}</h>
+                    <br><br>
+                    <p class="card-text">${comment}</p>
+                    <a href="#" onclick="modify("${id}")" class="badge badge-primary">수정</a>
+                    <a href="#" type="button" onclick="del('${id}')" class="badge badge-danger">삭제</a>
+                </div>
+            </div>`;
+            $("#cards-box").append(tempHtml);
+        }
+
+        function del(id) {
+                // alert('삭제 클릭!');
+                // 1. 서버에 1) POST 방식으로, 2) /api/delete 라는 url에, 3) name_give라는 이름으로 name을 전달합니다.
+                // 참고) POST 방식이므로 data: {'name_give': name} 과 같은 양식이 되어야합니다!
+                $.ajax({
+                    type: "POST",
+                    url: "/memo/del",
+                    data: {'id_give': id},
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            // 2. '삭제 완료! 안녕!' 얼럿을 띄웁니다.
+                            alert('삭제 완료!')
+                            // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
+                            window.location.reload()
+                        }
+                    }
+                });
+            }
+
+        
+    </script>
+</head>
+
+<body>
+
+    <div class="wrap">
+        <div class="jumbotron">
+            <h1 class="display-6">나홀로메모장 <span class="badge badge-secondary">ver2.0</span></h1>
+            <div id="input-box">
+                <div class="input-group mb-3">
+                    <input id="input-title" type="text" class="form-control" placeholder="제목을 입력하세요">
+                </div>
+                <div class="input-group">
+                    <textarea id="input-text" class="form-control" placeholder="내용을 입력하세요"></textarea>
+                </div>
+                <br>
+                <form class="lead">
+                    <button onclick="postArticle()" id="btn-post-box" type="submit" class="btn btn-primary">저장하기
+                    </button>
+                    <a href="#" type="button" onclick="del('6306355c85ead27b916af905')" class="badge badge-danger">삭제</a>
+                </form>
+            </div>
+        </div>
+
+        <div id="cards-box" class="card-columns">
+        </div>
+    </div>
+
+</body>
+
+</html>
